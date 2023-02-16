@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AppSklepZoologiczny.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="ADMIN")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
