@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppSklepZoologiczny.Data;
 using AppSklepZoologiczny.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppSklepZoologiczny.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
