@@ -4,6 +4,7 @@ using AppSklepZoologiczny.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppSklepZoologiczny.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230216194213_newModels")]
+    partial class newModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,10 +68,6 @@ namespace AppSklepZoologiczny.Migrations
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -303,15 +302,15 @@ namespace AppSklepZoologiczny.Migrations
                         {
                             Id = "99d666d3-40ed-4e9d-bc18-e56f2b69dceb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9ed3fbf3-1537-447a-b0e2-466cfd2dfeb7",
+                            ConcurrencyStamp = "c9e894cc-a739-4cf7-8390-f377cbe277cd",
                             Email = "admin@domain.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@DOMAIN.COM",
                             NormalizedUserName = "Administrator",
-                            PasswordHash = "AQAAAAEAACcQAAAAEII4Y24OLqdaHtHIPnOPajj58GSiiKUd7/jhqPsR8DstVKsdOiTA3XfRv/bpIM3bmA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI/XdrQEc5wlmHQPSaXGgT1sh4JEiJjy+4940Eo+jNh2UTzMzB5MXgCpcR4ncomBgg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dbf6c2d7-70d1-456d-8431-6465d86b5825",
+                            SecurityStamp = "53e00ba6-5c65-4bb8-847c-c9b87a9f2ccb",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });

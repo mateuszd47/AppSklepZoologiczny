@@ -10,90 +10,94 @@ using AppSklepZoologiczny.Models;
 
 namespace AppSklepZoologiczny.Controllers
 {
-    public class ProductsController : Controller
+    public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
+            var applicationDbContext = _context.Orders.Include(o => o.Customer).Include(o => o.Product);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Orders == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
+            var order = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(order);
         }
 
-        // GET: Products/Create
+        // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryId,Price,Availability")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,CustomerId,DateTimeOrder,ProductId,Quantity,UnitPrice")] Order order)
         {
             //if (ModelState.IsValid)
             //{
-                _context.Add(product);
+                _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             //}
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username", order.CustomerId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", order.ProductId);
+            return View(order);
         }
 
-        // GET: Products/Edit/5
+        // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Orders == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username", order.CustomerId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", order.ProductId);
+            return View(order);
         }
 
-        // POST: Products/Edit/5
+        // POST: Orders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,CategoryId,Price,Availability")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,DateTimeOrder,ProductId,Quantity,UnitPrice")] Order order)
         {
-            if (id != product.Id)
+            if (id != order.Id)
             {
                 return NotFound();
             }
@@ -102,12 +106,12 @@ namespace AppSklepZoologiczny.Controllers
             //{
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!OrderExists(order.Id))
                     {
                         return NotFound();
                     }
@@ -115,54 +119,56 @@ namespace AppSklepZoologiczny.Controllers
                     {
                         throw;
                     }
-                }
+                //}
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            }
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username", order.CustomerId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", order.ProductId);
+            return View(order);
         }
 
-        // GET: Products/Delete/5
+        // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Orders == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
+            var order = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(order);
         }
 
-        // POST: Products/Delete/5
+        // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Products == null)
+            if (_context.Orders == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Orders'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var order = await _context.Orders.FindAsync(id);
+            if (order != null)
             {
-                _context.Products.Remove(product);
+                _context.Orders.Remove(order);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private bool OrderExists(int id)
         {
-          return _context.Products.Any(e => e.Id == id);
+          return _context.Orders.Any(e => e.Id == id);
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppSklepZoologiczny.Controllers
 {
-    [Authorize(Roles="ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     public class AppRolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

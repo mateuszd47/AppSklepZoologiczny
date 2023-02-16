@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppSklepZoologiczny.Data;
 using AppSklepZoologiczny.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace AppSklepZoologiczny.Controllers
 {
-    [Authorize(Roles="ADMIN")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

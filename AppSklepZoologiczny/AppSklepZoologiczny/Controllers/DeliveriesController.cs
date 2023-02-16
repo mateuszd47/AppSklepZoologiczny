@@ -10,104 +10,104 @@ using AppSklepZoologiczny.Models;
 
 namespace AppSklepZoologiczny.Controllers
 {
-    public class ProductsController : Controller
+    public class DeliveriesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public DeliveriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: Deliveries
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
+            var applicationDbContext = _context.Deliveriess.Include(d => d.Order);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Deliveries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Deliveriess == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
+            var deliveries = await _context.Deliveriess
+                .Include(d => d.Order)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (deliveries == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(deliveries);
         }
 
-        // GET: Products/Create
+        // GET: Deliveries/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Deliveries/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryId,Price,Availability")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,OrderId,DateTimeDeliveries,IsDelivery")] Deliveries deliveries)
         {
-            //if (ModelState.IsValid)
-            //{
-                _context.Add(product);
+            if (ModelState.IsValid)
+            {
+                _context.Add(deliveries);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            }
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", deliveries.OrderId);
+            return View(deliveries);
         }
 
-        // GET: Products/Edit/5
+        // GET: Deliveries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Deliveriess == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var deliveries = await _context.Deliveriess.FindAsync(id);
+            if (deliveries == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", deliveries.OrderId);
+            return View(deliveries);
         }
 
-        // POST: Products/Edit/5
+        // POST: Deliveries/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,CategoryId,Price,Availability")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderId,DateTimeDeliveries,IsDelivery")] Deliveries deliveries)
         {
-            if (id != product.Id)
+            if (id != deliveries.Id)
             {
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(deliveries);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!DeliveriesExists(deliveries.Id))
                     {
                         return NotFound();
                     }
@@ -117,52 +117,52 @@ namespace AppSklepZoologiczny.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            }
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", deliveries.OrderId);
+            return View(deliveries);
         }
 
-        // GET: Products/Delete/5
+        // GET: Deliveries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Deliveriess == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
+            var deliveries = await _context.Deliveriess
+                .Include(d => d.Order)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (deliveries == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(deliveries);
         }
 
-        // POST: Products/Delete/5
+        // POST: Deliveries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Products == null)
+            if (_context.Deliveriess == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Deliveriess'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var deliveries = await _context.Deliveriess.FindAsync(id);
+            if (deliveries != null)
             {
-                _context.Products.Remove(product);
+                _context.Deliveriess.Remove(deliveries);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private bool DeliveriesExists(int id)
         {
-          return _context.Products.Any(e => e.Id == id);
+          return _context.Deliveriess.Any(e => e.Id == id);
         }
     }
 }

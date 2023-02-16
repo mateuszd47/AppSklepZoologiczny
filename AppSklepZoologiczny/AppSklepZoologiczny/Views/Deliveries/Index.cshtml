@@ -1,10 +1,10 @@
-﻿@model IEnumerable<AppSklepZoologiczny.Models.Category>
+﻿@model IEnumerable<AppSklepZoologiczny.Models.Deliveries>
 
 @{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] = "Deliveries";
 }
 
-<h1>Categories</h1>
+<h1>Deliveries</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
@@ -13,7 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTimeDeliveries)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDelivery)
             </th>
             <th></th>
         </tr>
@@ -22,7 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Order.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTimeDeliveries)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDelivery)
             </td>
                 <td class="text-end">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a> |

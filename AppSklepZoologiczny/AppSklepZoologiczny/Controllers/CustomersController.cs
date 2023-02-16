@@ -10,104 +10,99 @@ using AppSklepZoologiczny.Models;
 
 namespace AppSklepZoologiczny.Controllers
 {
-    public class ProductsController : Controller
+    public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+              return View(await _context.Customers.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
+            var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // GET: Products/Create
+        // GET: Customers/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryId,Price,Availability")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Username,Firstname,Lastname,PhoneNumber,Email,Address")] Customer customer)
         {
-            //if (ModelState.IsValid)
-            //{
-                _context.Add(product);
+            if (ModelState.IsValid)
+            {
+                _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            }
+            return View(customer);
         }
 
-        // GET: Products/Edit/5
+        // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            return View(customer);
         }
 
-        // POST: Products/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,CategoryId,Price,Availability")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Firstname,Lastname,PhoneNumber,Email,Address")] Customer customer)
         {
-            if (id != product.Id)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -117,52 +112,50 @@ namespace AppSklepZoologiczny.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            }
+            return View(customer);
         }
 
-        // GET: Products/Delete/5
+        // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
+            var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // POST: Products/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Products == null)
+            if (_context.Customers == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer != null)
             {
-                _context.Products.Remove(product);
+                _context.Customers.Remove(customer);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private bool CustomerExists(int id)
         {
-          return _context.Products.Any(e => e.Id == id);
+          return _context.Customers.Any(e => e.Id == id);
         }
     }
 }

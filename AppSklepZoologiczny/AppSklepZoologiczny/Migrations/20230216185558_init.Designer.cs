@@ -4,6 +4,7 @@ using AppSklepZoologiczny.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppSklepZoologiczny.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230216185558_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,99 +40,6 @@ namespace AppSklepZoologiczny.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("AppSklepZoologiczny.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lastname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("AppSklepZoologiczny.Models.Deliveries", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateTimeDeliveries")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDelivery")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Deliveriess");
-                });
-
-            modelBuilder.Entity("AppSklepZoologiczny.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateTimeOrder")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AppSklepZoologiczny.Models.Product", b =>
@@ -303,15 +213,15 @@ namespace AppSklepZoologiczny.Migrations
                         {
                             Id = "99d666d3-40ed-4e9d-bc18-e56f2b69dceb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9ed3fbf3-1537-447a-b0e2-466cfd2dfeb7",
+                            ConcurrencyStamp = "14cc8132-d74c-46bc-9e62-7fbb0567ffec",
                             Email = "admin@domain.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@DOMAIN.COM",
                             NormalizedUserName = "Administrator",
-                            PasswordHash = "AQAAAAEAACcQAAAAEII4Y24OLqdaHtHIPnOPajj58GSiiKUd7/jhqPsR8DstVKsdOiTA3XfRv/bpIM3bmA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED2vdVijIUAOaeQ2HwI/woxyWGSWtusdBZybI8rgbLyDGtVwKAoqQO9RYG1usk13Ag==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dbf6c2d7-70d1-456d-8431-6465d86b5825",
+                            SecurityStamp = "11dedf64-e4de-4add-a938-9003dc04f68c",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });
@@ -422,36 +332,6 @@ namespace AppSklepZoologiczny.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("AppSklepZoologiczny.Models.Deliveries", b =>
-                {
-                    b.HasOne("AppSklepZoologiczny.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("AppSklepZoologiczny.Models.Order", b =>
-                {
-                    b.HasOne("AppSklepZoologiczny.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppSklepZoologiczny.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AppSklepZoologiczny.Models.Product", b =>
