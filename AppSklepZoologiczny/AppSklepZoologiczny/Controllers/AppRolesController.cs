@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppSklepZoologiczny.Controllers
 {
@@ -38,6 +39,17 @@ namespace AppSklepZoologiczny.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Delete(string id)
+        {
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
+            if (role != null)
+            {
+                IdentityResult result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                    return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
 
     }
 }
