@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppSklepZoologiczny.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230216194213_newModels")]
-    partial class newModels
+    [Migration("20230216224523_initialdatabase")]
+    partial class initialdatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,10 @@ namespace AppSklepZoologiczny.Migrations
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -193,10 +197,24 @@ namespace AppSklepZoologiczny.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "68bdf9cb-4866-444d-8cf5-56d54170dc81",
+                            Id = "b950ae57-26ae-40e0-b451-52d1a19c9710",
                             ConcurrencyStamp = "1",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "fc69f407-65e9-43f1-9e7d-2743e85eac8d",
+                            ConcurrencyStamp = "2",
+                            Name = "USER",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "7ced68a7-beec-441c-8fd7-6e11d99b76c6",
+                            ConcurrencyStamp = "3",
+                            Name = "CUSTOMER",
+                            NormalizedName = "CUSTOMER"
                         });
                 });
 
@@ -296,24 +314,6 @@ namespace AppSklepZoologiczny.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
 
                     b.UseTphMappingStrategy();
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "99d666d3-40ed-4e9d-bc18-e56f2b69dceb",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "c9e894cc-a739-4cf7-8390-f377cbe277cd",
-                            Email = "admin@domain.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@DOMAIN.COM",
-                            NormalizedUserName = "Administrator",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI/XdrQEc5wlmHQPSaXGgT1sh4JEiJjy+4940Eo+jNh2UTzMzB5MXgCpcR4ncomBgg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "53e00ba6-5c65-4bb8-847c-c9b87a9f2ccb",
-                            TwoFactorEnabled = false,
-                            UserName = "Administrator"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -378,13 +378,6 @@ namespace AppSklepZoologiczny.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "99d666d3-40ed-4e9d-bc18-e56f2b69dceb",
-                            RoleId = "68bdf9cb-4866-444d-8cf5-56d54170dc81"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
