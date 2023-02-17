@@ -13,6 +13,7 @@ namespace AppSklepZoologiczny.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }

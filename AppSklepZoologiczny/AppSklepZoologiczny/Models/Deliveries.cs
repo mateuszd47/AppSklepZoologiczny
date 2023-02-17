@@ -8,10 +8,12 @@ namespace AppSklepZoologiczny.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Order Id")]
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Date is required")]
+        [Display(Name = "Date Deliveries")]
         public DateTime DateTimeDeliveries { get; set; }
         [Required]
         public bool IsDelivery { get; set; }

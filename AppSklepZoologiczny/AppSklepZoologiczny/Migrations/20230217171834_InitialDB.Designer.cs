@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppSklepZoologiczny.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230216224523_initialdatabase")]
-    partial class initialdatabase
+    [Migration("20230217171834_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,21 +197,21 @@ namespace AppSklepZoologiczny.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b950ae57-26ae-40e0-b451-52d1a19c9710",
+                            Id = "7ac4ef51-5ab8-48cc-96b4-847dc81fe714",
                             ConcurrencyStamp = "1",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "fc69f407-65e9-43f1-9e7d-2743e85eac8d",
+                            Id = "f3ee4099-e98a-44ce-b464-5bc3531044f8",
                             ConcurrencyStamp = "2",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "7ced68a7-beec-441c-8fd7-6e11d99b76c6",
+                            Id = "eca22f1a-7e37-4a88-b396-553f7e89fd4b",
                             ConcurrencyStamp = "3",
                             Name = "CUSTOMER",
                             NormalizedName = "CUSTOMER"

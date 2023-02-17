@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppSklepZoologiczny.Migrations
 {
     /// <inheritdoc />
-    public partial class initialdatabase : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -270,9 +270,9 @@ namespace AppSklepZoologiczny.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "7ced68a7-beec-441c-8fd7-6e11d99b76c6", "3", "CUSTOMER", "CUSTOMER" },
-                    { "b950ae57-26ae-40e0-b451-52d1a19c9710", "1", "ADMIN", "ADMIN" },
-                    { "fc69f407-65e9-43f1-9e7d-2743e85eac8d", "2", "USER", "USER" }
+                    { "7ac4ef51-5ab8-48cc-96b4-847dc81fe714", "1", "ADMIN", "ADMIN" },
+                    { "eca22f1a-7e37-4a88-b396-553f7e89fd4b", "3", "CUSTOMER", "CUSTOMER" },
+                    { "f3ee4099-e98a-44ce-b464-5bc3531044f8", "2", "USER", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
