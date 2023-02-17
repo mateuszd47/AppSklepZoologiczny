@@ -5,9 +5,17 @@
 }
 
 <h1>Orders</h1>
-
+<form asp-action="Index" method="get">
+    <div class="form-group" style="width: 300px;">
+        <label for="SearchString">Search</label>
+        <div style="display:flex; flex-direction: row; gap:5px;">
+        <input style="margin-bottom: 10px" type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input style="margin-bottom: 10px" type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
 <table class="table">
     <thead>

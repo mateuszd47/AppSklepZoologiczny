@@ -26,6 +26,20 @@ namespace AppSklepZoologiczny.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        //public async Task<IActionResult> Index(string SearchString)
+        //{
+        //    var applicationDbContext = _context.Orders.Include(o => o.Customer).Include(o => o.Product);
+        //    //return View(await applicationDbContext.ToListAsync());
+        //    ViewData["CurrentFilter"] = SearchString;
+        //    var items = from b in applicationDbContext
+        //                select b;
+        //    if (!String.IsNullOrEmpty(SearchString))
+        //    {
+        //        items = items.Where(x => x.DateTimeOrder.ToString().Contains(SearchString));
+        //    }
+        //    return View(items);
+        //}
+
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {

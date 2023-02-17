@@ -20,9 +20,17 @@ namespace AppSklepZoologiczny.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString)
         {
-              return View(await _context.Categories.ToListAsync());
+            //return View(await _context.Categories.ToListAsync());
+            ViewData["CurrentFilter"] = SearchString;
+            var items = from b in _context.Categories
+                       select b;
+            if(!String.IsNullOrEmpty(SearchString))
+            {
+                items = items.Where(x => x.Name.Contains(SearchString));
+            }
+            return View(items);
         }
 
         // GET: Categories/Details/5

@@ -20,9 +20,21 @@ namespace AppSklepZoologiczny.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //      return View(await _context.Customers.ToListAsync());
+        //}
+        public async Task<IActionResult> Index(string SearchString)
         {
-              return View(await _context.Customers.ToListAsync());
+            //return View(await _context.Customers.ToListAsync());
+            ViewData["CurrentFilter"] = SearchString;
+            var items = from b in _context.Customers
+                        select b;
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                items = items.Where(x => x.Username.Contains(SearchString));
+            }
+            return View(items);
         }
 
         // GET: Customers/Details/5
