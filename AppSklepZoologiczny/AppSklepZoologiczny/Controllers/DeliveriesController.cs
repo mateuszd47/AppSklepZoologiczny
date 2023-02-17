@@ -20,25 +20,25 @@ namespace AppSklepZoologiczny.Controllers
         }
 
         // GET: Deliveries
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Deliveriess.Include(d => d.Order);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        //public async Task<IActionResult> Index(string SearchString)
+        //public async Task<IActionResult> Index()
         //{
         //    var applicationDbContext = _context.Deliveriess.Include(d => d.Order);
-        //    //return View(await applicationDbContext.ToListAsync());
-        //    ViewData["CurrentFilter"] = SearchString;
-        //    var items = from b in applicationDbContext
-        //                select b;
-        //    if (!String.IsNullOrEmpty(SearchString))
-        //    {
-        //        items = items.Where(x => x.DateTimeDeliveries.ToString().Contains(SearchString));
-        //    }
-        //    return View(items);
+        //    return View(await applicationDbContext.ToListAsync());
         //}
+
+        public async Task<IActionResult> Index(string SearchString)
+        {
+            var applicationDbContext = _context.Deliveriess.Include(d => d.Order);
+            //return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = SearchString;
+            var items = from b in applicationDbContext
+                        select b;
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                items = items.Where(x => x.OrderId.ToString().Contains(SearchString));
+            }
+            return View(items);
+        }
 
         // GET: Deliveries/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -73,12 +73,12 @@ namespace AppSklepZoologiczny.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,OrderId,DateTimeDeliveries,IsDelivery")] Deliveries deliveries)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 _context.Add(deliveries);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", deliveries.OrderId);
             return View(deliveries);
         }
@@ -112,8 +112,8 @@ namespace AppSklepZoologiczny.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Update(deliveries);
@@ -131,7 +131,7 @@ namespace AppSklepZoologiczny.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", deliveries.OrderId);
             return View(deliveries);
         }

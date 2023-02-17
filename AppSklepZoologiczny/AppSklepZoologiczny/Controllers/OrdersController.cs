@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppSklepZoologiczny.Data;
 using AppSklepZoologiczny.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AppSklepZoologiczny.Controllers
 {
@@ -20,25 +21,25 @@ namespace AppSklepZoologiczny.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Orders.Include(o => o.Customer).Include(o => o.Product);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        //public async Task<IActionResult> Index(string SearchString)
+        //public async Task<IActionResult> Index()
         //{
         //    var applicationDbContext = _context.Orders.Include(o => o.Customer).Include(o => o.Product);
-        //    //return View(await applicationDbContext.ToListAsync());
-        //    ViewData["CurrentFilter"] = SearchString;
-        //    var items = from b in applicationDbContext
-        //                select b;
-        //    if (!String.IsNullOrEmpty(SearchString))
-        //    {
-        //        items = items.Where(x => x.DateTimeOrder.ToString().Contains(SearchString));
-        //    }
-        //    return View(items);
+        //    return View(await applicationDbContext.ToListAsync());
         //}
+
+        public async Task<IActionResult> Index(string SearchString)
+        {
+            var applicationDbContext = _context.Orders.Include(o => o.Customer).Include(o => o.Product);
+            //return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = SearchString;
+            var items = from b in applicationDbContext
+                        select b;
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                items = items.Where(x => x.Customer.Username.Contains(SearchString));
+            }
+            return View(items);
+        }
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -65,6 +66,7 @@ namespace AppSklepZoologiczny.Controllers
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username");
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
+            ViewData["UnitPrice"] = new SelectList(_context.Products, "Price", "Price");
             return View();
         }
 
@@ -77,12 +79,13 @@ namespace AppSklepZoologiczny.Controllers
         {
             //if (ModelState.IsValid)
             //{
-                _context.Add(order);
+            _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             //}
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username", order.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", order.ProductId);
+            ViewData["UnitPrice"] = new SelectList(_context.Products, "Price", "Price" , order.ProductId);
             return View(order);
         }
 
