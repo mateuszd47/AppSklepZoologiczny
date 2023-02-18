@@ -66,7 +66,6 @@ namespace AppSklepZoologiczny.Controllers
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username");
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-            ViewData["UnitPrice"] = new SelectList(_context.Products, "Price", "Price");
             return View();
         }
 
@@ -77,6 +76,8 @@ namespace AppSklepZoologiczny.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CustomerId,DateTimeOrder,ProductId,Quantity,UnitPrice")] Order order)
         {
+           var product =  _context.Products.Where(x=>x.Id== order.ProductId).FirstOrDefault();
+            order.UnitPrice = product.Price * order.Quantity;
             //if (ModelState.IsValid)
             //{
             _context.Add(order);
@@ -85,7 +86,6 @@ namespace AppSklepZoologiczny.Controllers
             //}
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Username", order.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", order.ProductId);
-            ViewData["UnitPrice"] = new SelectList(_context.Products, "Price", "Price" , order.ProductId);
             return View(order);
         }
 
@@ -123,7 +123,9 @@ namespace AppSklepZoologiczny.Controllers
             //{
                 try
                 {
-                    _context.Update(order);
+                var product = _context.Products.Where(x => x.Id == order.ProductId).FirstOrDefault();
+                order.UnitPrice = product.Price * order.Quantity;
+                _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
